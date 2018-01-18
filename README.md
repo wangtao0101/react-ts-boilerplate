@@ -1,5 +1,6 @@
 * react
 * typescript
+* antd
 * react route v4
 * axios
 * less (css modules)
