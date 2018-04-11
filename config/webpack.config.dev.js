@@ -26,6 +26,12 @@ const env = getClientEnvironment(publicUrl);
 // Note: defined here because it will be used more than once.
 const cssFilename = 'static/css/[name].[contenthash:8].css';
 
+const shouldUseRelativeAssetPaths = publicPath === './';
+const extractTextPluginOptions = shouldUseRelativeAssetPaths
+  ? // Making sure that the publicPath goes back to to build folder.
+  { publicPath: Array(cssFilename.split('/').length).join('../') }
+  : {};
+
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
@@ -98,11 +104,7 @@ module.exports = {
       '.jsx',
     ],
     alias: {
-
-      // Support React Native Web
-      // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
-      config: `${paths.appSrc}/config/` + (process.env.REACT_WEBPACK_ENV || 'dev'),
+      config: `${paths.appSrc}/config/`,
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -220,19 +222,20 @@ module.exports = {
                     },
                   ],
                 },
+                extractTextPluginOptions
               )
             ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
           {
-            test: /\.modules\.less$/,
+            test: /\.m\.less$/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
                   fallback: require.resolve('style-loader'),
                   use: [
                     {
-                      loader: require.resolve('typings-for-css-modules-loader'),
+                      loader: require.resolve('css-loader'),
                       options: {
                         importLoaders: 2,
                         minimize: true,
@@ -273,13 +276,14 @@ module.exports = {
                     },
                   ],
                 },
+                extractTextPluginOptions
               )
             ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
           {
             exclude: [
-              /\.modules\.less$/,
+              /\.m\.less$/,
             ],
             test: /\.less$/,
             loader: ExtractTextPlugin.extract(
@@ -324,6 +328,7 @@ module.exports = {
                     },
                   ],
                 },
+                extractTextPluginOptions
               )
             ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.

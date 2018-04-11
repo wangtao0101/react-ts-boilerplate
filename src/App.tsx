@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as css from './App.modules.less';
+import * as css from './App.m.less';
 import './App.css';
 
 const logo = require('./logo.svg');

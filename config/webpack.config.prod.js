@@ -99,11 +99,7 @@ module.exports = {
       '.jsx',
     ],
     alias: {
-
-      // Support React Native Web
-      // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
-      config: `${paths.appSrc}/config/` + (process.env.REACT_WEBPACK_ENV || 'prod'),
+      config: `${paths.appSrc}/config/`,
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
